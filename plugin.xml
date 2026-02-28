@@ -31,7 +31,7 @@
     <platform name="android">
         <config-file target="config.xml" parent="/*">
             <feature name="FirebasexPerformancePlugin">
-                <param name="android-package" value="org.anthropic.cordova.firebase.FirebasexPerformancePlugin" />
+                <param name="android-package" value="org.apache.cordova.firebasex.FirebasexPerformancePlugin" />
                 <param name="onload" value="true" />
             </feature>
         </config-file>
@@ -42,7 +42,7 @@
 
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
         <source-file src="src/android/FirebasexPerformancePlugin.java"
-                     target-dir="src/org/anthropic/cordova/firebase" />
+                     target-dir="src/org/apache/cordova/firebasex" />
     </platform>
 
     <!-- iOS -->

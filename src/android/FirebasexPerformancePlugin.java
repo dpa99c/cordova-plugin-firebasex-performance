@@ -1,4 +1,4 @@
-package org.anthropic.cordova.firebase;
+package org.apache.cordova.firebasex;
 
 import android.util.Log;
 
