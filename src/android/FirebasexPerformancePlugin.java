@@ -12,13 +12,36 @@ import com.google.firebase.perf.metrics.Trace;
 
 import java.util.HashMap;
 
+/**
+ * Cordova plugin for Firebase Performance Monitoring on Android.
+ *
+ * <p>Provides custom trace management (start, increment counter, stop) and
+ * control over performance data collection. Active traces are stored in an
+ * in-memory map keyed by trace name.
+ *
+ * <p>The performance collection enabled state is persisted via
+ * {@link FirebasexCorePlugin} shared preferences so it survives app restarts.
+ *
+ * @see <a href="https://firebase.google.com/docs/perf-mon">Firebase Performance Monitoring</a>
+ */
 public class FirebasexPerformancePlugin extends CordovaPlugin {
 
+    /** Log tag for all messages from this plugin. */
     private static final String TAG = "FirebasexPerformance";
+
+    /** SharedPreferences key for the performance collection enabled state. */
     private static final String PERFORMANCE_COLLECTION_ENABLED = "firebase_performance_collection_enabled";
 
+    /** Map of active traces, keyed by trace name. */
     private HashMap<String, Trace> traces = new HashMap<String, Trace>();
 
+    /**
+     * Initialises the plugin.
+     *
+     * Checks the shared preference for performance collection enabled state.
+     * If not already set, reads the value from AndroidManifest meta-data and
+     * persists it to shared preferences.
+     */
     @Override
     protected void pluginInitialize() {
         Log.d(TAG, "pluginInitialize");
@@ -40,6 +63,18 @@ public class FirebasexPerformancePlugin extends CordovaPlugin {
         }
     }
 
+    /**
+     * Dispatches Cordova actions to plugin methods.
+     *
+     * <p>Supported actions:
+     * <ul>
+     *   <li>{@code "startTrace"} - start a custom trace</li>
+     *   <li>{@code "incrementCounter"} - increment a metric on an active trace</li>
+     *   <li>{@code "stopTrace"} - stop and submit an active trace</li>
+     *   <li>{@code "setPerformanceCollectionEnabled"} - enable/disable data collection</li>
+     *   <li>{@code "isPerformanceCollectionEnabled"} - query data collection state</li>
+     * </ul>
+     */
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         switch (action) {
@@ -62,6 +97,14 @@ public class FirebasexPerformancePlugin extends CordovaPlugin {
         return false;
     }
 
+    /**
+     * Starts a custom performance trace with the given name.
+     *
+     * If a trace with the same name already exists, the existing trace is reused.
+     *
+     * @param callbackContext the Cordova callback
+     * @param name            the trace name
+     */
     private void startTrace(final CallbackContext callbackContext, final String name) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -80,6 +123,13 @@ public class FirebasexPerformancePlugin extends CordovaPlugin {
         });
     }
 
+    /**
+     * Increments a named metric on an active trace by 1.
+     *
+     * @param callbackContext the Cordova callback
+     * @param name            the trace name
+     * @param counterNamed    the metric/counter name to increment
+     */
     private void incrementCounter(final CallbackContext callbackContext, final String name, final String counterNamed) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -98,6 +148,12 @@ public class FirebasexPerformancePlugin extends CordovaPlugin {
         });
     }
 
+    /**
+     * Stops an active trace, submitting its data, and removes it from the map.
+     *
+     * @param callbackContext the Cordova callback
+     * @param name            the trace name to stop
+     */
     private void stopTrace(final CallbackContext callbackContext, final String name) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -117,6 +173,14 @@ public class FirebasexPerformancePlugin extends CordovaPlugin {
         });
     }
 
+    /**
+     * Enables or disables Firebase Performance Monitoring data collection.
+     *
+     * The setting is persisted to shared preferences via the core plugin.
+     *
+     * @param callbackContext the Cordova callback
+     * @param enabled         {@code true} to enable, {@code false} to disable
+     */
     private void setPerformanceCollectionEnabled(final CallbackContext callbackContext, final boolean enabled) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -131,6 +195,13 @@ public class FirebasexPerformancePlugin extends CordovaPlugin {
         });
     }
 
+    /**
+     * Queries the current performance data collection enabled state from shared preferences.
+     *
+     * Returns 1 (enabled) or 0 (disabled) to the callback.
+     *
+     * @param callbackContext the Cordova callback
+     */
     private void isPerformanceCollectionEnabled(final CallbackContext callbackContext) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {

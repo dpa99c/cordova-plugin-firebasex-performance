@@ -1,14 +1,25 @@
+/**
+ * @file FirebasexPerformancePlugin.m
+ * @brief iOS implementation of the Firebase Performance Monitoring Cordova plugin.
+ */
+
 #import "FirebasexPerformancePlugin.h"
 #import "FirebasexCorePlugin.h"
 @import FirebasePerformance;
 
+/** Preference key for the performance data collection enabled state. */
 static NSString *const FIREBASE_PERFORMANCE_COLLECTION_ENABLED =
     @"FIREBASE_PERFORMANCE_COLLECTION_ENABLED";
 
 @implementation FirebasexPerformancePlugin {
+    /** Dictionary of active traces, keyed by trace name. Thread-safe via @synchronized. */
     NSMutableDictionary *_traces;
 }
 
+/**
+ * Initialises the plugin, creating the traces dictionary and reading the
+ * persisted performance collection preference.
+ */
 - (void)pluginInitialize {
     NSLog(@"FirebasexPerformancePlugin pluginInitialize");
     _traces = [[NSMutableDictionary alloc] init];
@@ -19,6 +30,13 @@ static NSString *const FIREBASE_PERFORMANCE_COLLECTION_ENABLED =
     }
 }
 
+/**
+ * Enables or disables Firebase Performance data collection.
+ *
+ * Persists the setting via the core plugin's preference flags.
+ *
+ * @param command Cordova command. args[0] = boolean.
+ */
 - (void)setPerformanceCollectionEnabled:(CDVInvokedUrlCommand *)command {
     [self.commandDelegate runInBackground:^{
         @try {
@@ -34,6 +52,9 @@ static NSString *const FIREBASE_PERFORMANCE_COLLECTION_ENABLED =
     }];
 }
 
+/**
+ * Returns the current performance data collection enabled state as a boolean.
+ */
 - (void)isPerformanceCollectionEnabled:(CDVInvokedUrlCommand *)command {
     [self.commandDelegate runInBackground:^{
         @try {
@@ -48,6 +69,14 @@ static NSString *const FIREBASE_PERFORMANCE_COLLECTION_ENABLED =
     }];
 }
 
+/**
+ * Starts a custom performance trace.
+ *
+ * If a trace with the given name already exists, it is reused.
+ * The trace dictionary is protected with @c @synchronized for thread safety.
+ *
+ * @param command Cordova command. args[0] = trace name (NSString).
+ */
 - (void)startTrace:(CDVInvokedUrlCommand *)command {
     [self.commandDelegate runInBackground:^{
         @try {
@@ -67,6 +96,13 @@ static NSString *const FIREBASE_PERFORMANCE_COLLECTION_ENABLED =
     }];
 }
 
+/**
+ * Increments a named metric on an active trace by 1.
+ *
+ * Returns an error if the trace is not found.
+ *
+ * @param command Cordova command. args[0] = trace name, args[1] = counter name.
+ */
 - (void)incrementCounter:(CDVInvokedUrlCommand *)command {
     [self.commandDelegate runInBackground:^{
         @try {
@@ -90,6 +126,13 @@ static NSString *const FIREBASE_PERFORMANCE_COLLECTION_ENABLED =
     }];
 }
 
+/**
+ * Stops an active trace, submits its data, and removes it from the dictionary.
+ *
+ * Returns an error if the trace is not found.
+ *
+ * @param command Cordova command. args[0] = trace name.
+ */
 - (void)stopTrace:(CDVInvokedUrlCommand *)command {
     [self.commandDelegate runInBackground:^{
         @try {
