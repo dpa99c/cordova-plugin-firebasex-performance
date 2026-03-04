@@ -1,11 +1,10 @@
-# cordova-plugin-firebasex-performance
-
-[![npm version](https://img.shields.io/npm/v/cordova-plugin-firebasex-performance.svg)](https://www.npmjs.com/package/cordova-plugin-firebasex-performance)
+# cordova-plugin-firebasex-performance [![Latest Stable Version](https://img.shields.io/npm/v/cordova-plugin-firebasex-performance.svg)](https://www.npmjs.com/package/cordova-plugin-firebasex-performance)
 
 Firebase Performance Monitoring module for the [modular FirebaseX Cordova plugin suite](https://github.com/dpa99c/cordova-plugin-firebasex-performance#modular-plugins).
 
 The [Firebase Performance Monitoring SDK](https://firebase.google.com/docs/perf-mon) enables you to measure, monitor and analyze the performance of your app in the Firebase console.
-It enables you to measure metrics such as app startup, screen rendering and network requests.
+
+This plugin wraps the [Firebase Performance Monitoring SDK](https://firebase.google.com/docs/perf-mon) and provides methods to control performance data collection and create custom performance traces in your Cordova app.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
