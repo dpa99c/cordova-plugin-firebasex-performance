@@ -52,6 +52,8 @@ Or in your `config.xml`:
 
 | Variable | Default | Description |
 |---|---|---|
+| `ANDROID_FIREBASE_PERF_VERSION` | `22.0.2` | Android Firebase Performance SDK version. |
+| `IOS_FIREBASE_SDK_VERSION` | `12.9.0` | iOS Firebase SDK version (for performance pod). |
 | `FIREBASE_PERFORMANCE_COLLECTION_ENABLED` | `true` | Whether to enable performance data collection on app startup. Set to `false` to [disable on startup](#disable-data-collection-on-startup) and enable at runtime using [`setPerformanceCollectionEnabled()`](#setperformancecollectionenabled). |
 | `ANDROID_FIREBASE_PERFORMANCE_MONITORING` | `false` | Whether to add the [Firebase Performance Monitoring Gradle plugin](#android-performance-monitoring-gradle-plugin) for automatic Android network request monitoring. |
 | `ANDROID_FIREBASE_PERF_GRADLE_PLUGIN_VERSION` | `2.0.1` | Version of the Firebase Performance Monitoring Gradle plugin to use. |
@@ -77,7 +79,7 @@ Data collection can then be enabled/disabled at runtime using [`setPerformanceCo
 
 # API
 
-The following methods are available via the `FirebasexPerformancePlugin` global object.
+The following methods are available via the `FirebasexPerformance` global object.
 
 ## setPerformanceCollectionEnabled
 
@@ -88,9 +90,9 @@ Manually enable/disable performance data collection, e.g. if [disabled on app st
 -   {boolean} setEnabled - whether to enable or disable performance data collection
 
 ```javascript
-FirebasexPerformancePlugin.setPerformanceCollectionEnabled(true); // Enables performance data collection
+FirebasexPerformance.setPerformanceCollectionEnabled(true); // Enables performance data collection
 
-FirebasexPerformancePlugin.setPerformanceCollectionEnabled(false); // Disables performance data collection
+FirebasexPerformance.setPerformanceCollectionEnabled(false); // Disables performance data collection
 ```
 
 ## isPerformanceCollectionEnabled
@@ -110,7 +112,7 @@ Notes:
 -   {function} error - (optional) callback function which will be passed a {string} error message as an argument
 
 ```javascript
-FirebasexPerformancePlugin.isPerformanceCollectionEnabled(
+FirebasexPerformance.isPerformanceCollectionEnabled(
     function (enabled) {
         console.log(
             "Performance data collection is " +
@@ -136,7 +138,7 @@ Start a trace.
 -   {function} error - callback function which will be passed a {string} error message as an argument
 
 ```javascript
-FirebasexPerformancePlugin.startTrace("test trace", success, error);
+FirebasexPerformance.startTrace("test trace", success, error);
 ```
 
 ## incrementCounter
@@ -151,7 +153,7 @@ To count the performance-related events that occur in your app (such as cache hi
 -   {function} error - callback function which will be passed a {string} error message as an argument
 
 ```javascript
-FirebasexPerformancePlugin.incrementCounter("test trace", "retry", success, error);
+FirebasexPerformance.incrementCounter("test trace", "retry", success, error);
 ```
 
 ## stopTrace
@@ -165,7 +167,7 @@ Stop the trace.
 -   {function} error - callback function which will be passed a {string} error message as an argument
 
 ```javascript
-FirebasexPerformancePlugin.stopTrace("test trace");
+FirebasexPerformance.stopTrace("test trace");
 ```
 
 # Reporting issues

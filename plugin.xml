@@ -22,7 +22,7 @@
     <dependency id="cordova-plugin-firebasex-core" />
 
     <js-module src="www/firebasex-performance.js" name="FirebasexPerformancePlugin">
-        <clobbers target="FirebasexPerformancePlugin" />
+        <clobbers target="FirebasexPerformance" />
     </js-module>
 
     <hook type="after_prepare" src="scripts/after_prepare.js" />
@@ -40,7 +40,9 @@
             <meta-data android:name="firebase_performance_collection_enabled" android:value="$FIREBASE_PERFORMANCE_COLLECTION_ENABLED" />
         </config-file>
 
-        <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+        <preference name="ANDROID_FIREBASE_PERF_VERSION" default="22.0.2" />
+
+        <framework src="com.google.firebase:firebase-perf:$ANDROID_FIREBASE_PERF_VERSION" />
         <source-file src="src/android/FirebasexPerformancePlugin.java"
                      target-dir="src/org/apache/cordova/firebasex" />
     </platform>
@@ -57,12 +59,14 @@
         <header-file src="src/ios/FirebasexPerformancePlugin.h" />
         <source-file src="src/ios/FirebasexPerformancePlugin.m" />
 
+        <preference name="IOS_FIREBASE_SDK_VERSION" default="12.9.0" />
+
         <podspec>
             <config>
                 <source url="https://cdn.cocoapods.org/" />
             </config>
             <pods use-frameworks="true">
-                <pod name="FirebasePerformance" spec="12.9.0"/>
+                <pod name="FirebasePerformance" spec="$IOS_FIREBASE_SDK_VERSION"/>
             </pods>
         </podspec>
     </platform>

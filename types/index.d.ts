@@ -1,4 +1,4 @@
-interface FirebasexPerformancePlugin {
+interface FirebasexPerformance {
     startTrace(
         name: string,
         success: () => void,
