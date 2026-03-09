@@ -66,9 +66,11 @@
                 <source url="https://cdn.cocoapods.org/" />
             </config>
             <pods use-frameworks="true">
-                <pod name="FirebasePerformance" spec="$IOS_FIREBASE_SDK_VERSION"/>
+                <pod name="FirebasePerformance" spec="12.9.0"/>
             </pods>
         </podspec>
+
+        <hook type="after_plugin_install" src="scripts/ios/after_plugin_install.js" />
     </platform>
 
 </plugin>

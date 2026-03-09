@@ -9,7 +9,7 @@
     },
     "keywords": ["cordova", "firebase", "performance", "monitoring"],
     "dependencies": {
-        "cordova-plugin-firebasex-core": ">=1.0.0"
+        "plist": "^3.0.1"
     },
     "devDependencies": {
         "xml-js": "^1.6.11"
