@@ -73,7 +73,7 @@ static NSString *const FIREBASE_PERFORMANCE_COLLECTION_ENABLED =
  * Starts a custom performance trace.
  *
  * If a trace with the given name already exists, it is reused.
- * The trace dictionary is protected with @c @synchronized for thread safety.
+ * The trace dictionary is protected with @c synchronized for thread safety.
  *
  * @param command Cordova command. args[0] = trace name (NSString).
  */
