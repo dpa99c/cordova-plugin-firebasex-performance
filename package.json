@@ -1,11 +1,25 @@
 {
     "name": "cordova-plugin-firebasex-performance",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Firebase Performance Monitoring module for cordova-plugin-firebasex",
+    "author": "Dave Alden",
     "license": "MIT",
     "cordova": {
         "id": "cordova-plugin-firebasex-performance",
         "platforms": ["android", "ios"]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dpa99c/cordova-plugin-firebasex-performance.git"
+    },
+    "engines": {
+        "cordovaDependencies": {
+            "1.0.0": {
+                "cordova": ">=12",
+                "cordova-android": ">=14",
+                "cordova-ios": ">=7"
+            }
+        }
     },
     "keywords": ["cordova", "firebase", "performance", "monitoring"],
     "dependencies": {
