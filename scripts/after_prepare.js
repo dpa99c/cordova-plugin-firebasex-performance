@@ -48,6 +48,44 @@ var PERF_GRADLE_PLUGIN_CLASS_DEF = "com.google.firebase:perf-plugin";
 /** @constant {string} Gradle plugin ID to apply for Firebase Performance Monitoring. */
 var PERF_GRADLE_PLUGIN_DEF = "com.google.firebase.firebase-perf";
 
+/** @constant {string} The expected app's Xcode name under `platforms/ios`. Since cordova-ios 8, this is `App`; in cordova <= 7 this was the project name. */
+var appNameCordova8Plus = "App";
+
+/** @type {string} The app name, extracted from `config.xml`. Used to determine paths to the Xcode project and Info.plist. */
+var appName;
+
+/** @type {string} The path to the iOS platform's app subdirectory, determined based on cordova-ios version. */
+var iosPlatformPath;
+
+/***************************
+ * Internal helper functions
+ ****************************/
+
+/**
+ * Supports both the legacy cordova-ios layout (where the Xcode project is under `platforms/ios/<AppName>.xcodeproj`)
+ * and the new cordova-ios 8+ layout (where the Xcode project is under `platforms/ios/App/App.xcodeproj`)
+ * by checking for the existence of the new layout first, then falling back to the old layout if not found.
+ */
+function getAppSubDirPath() {
+    var newPath = path.join(iosPlatformPath, appNameCordova8Plus);
+    if (fs.existsSync(newPath)) {
+        return newPath;
+    }
+    return path.join(iosPlatformPath, appName);
+}
+
+/**
+ * Determines whether the project is using cordova-ios 8+ by checking for the existence of the `platforms/ios/App` directory.
+ *
+ * @param {string} iosPlatformPath - Absolute path to the `platforms/ios` directory.
+ * @returns {boolean} True if cordova-ios 8+ layout is detected, false otherwise.
+ */
+function isCordovaIOS8Plus () {
+    var appSubDirPath = path.join(iosPlatformPath, appNameCordova8Plus);
+    return fs.existsSync(appSubDirPath) && fs.statSync(appSubDirPath).isDirectory();
+};
+
+
 /**
  * Resolves plugin variables using a 3-layer override strategy:
  * 1. Default values from `plugin.xml` `<preference>` elements.
@@ -183,16 +221,24 @@ module.exports = function (context) {
     if (context.opts.platforms && context.opts.platforms.indexOf("ios") !== -1) {
         try {
             var plist = require("plist");
-            var iosDir = path.join("platforms", "ios");
-            if (!fs.existsSync(iosDir)) return;
+            iosPlatformPath = path.join("platforms", "ios");
+            if (!fs.existsSync(iosPlatformPath)) return;
 
-            var configXml = fs.readFileSync(path.join("config.xml"), "utf-8");
-            var appNameMatch = configXml.match(/<name>([^<]+)<\/name>/);
-            if (!appNameMatch) return;
-            var appName = appNameMatch[1];
+            var appName;
+            if(isCordovaIOS8Plus()) {
+                appName = appNameCordova8Plus;
+            } else {
+                var configXml = fs.readFileSync(path.join("config.xml"), "utf-8");
+                var appNameMatch = configXml.match(/<name>([^<]+)<\/name>/);
+                if (!appNameMatch) return;
+                appName = appNameMatch[1];
+            }
 
-            var googlePlistPath = path.join(iosDir, appName, "GoogleService-Info.plist");
-            if (!fs.existsSync(googlePlistPath)) return;
+            var googlePlistPath = path.join(getAppSubDirPath(), "Resources", "GoogleService-Info.plist");
+            if (!fs.existsSync(googlePlistPath)) {
+                console.warn("GoogleService-Info.plist not found at expected path: " + googlePlistPath);
+                return;
+            }
 
             var googlePlist = plist.parse(fs.readFileSync(googlePlistPath, "utf-8"));
             if (typeof pluginVariables["FIREBASE_PERFORMANCE_COLLECTION_ENABLED"] !== "undefined") {
