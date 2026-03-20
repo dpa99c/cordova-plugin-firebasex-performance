@@ -1,6 +1,6 @@
 {
     "name": "cordova-plugin-firebasex-performance",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Firebase Performance Monitoring module for cordova-plugin-firebasex",
     "author": "Dave Alden",
     "license": "MIT",

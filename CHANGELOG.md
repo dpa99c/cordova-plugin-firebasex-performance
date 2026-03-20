@@ -1,3 +1,9 @@
+# Version 1.0.3
+- fix: correct Android feature `config-file` target to `res/xml/config.xml`.
+
+# Version 1.0.2
+- (ios) Fix hook script compatibility with cordova-ios@8.
+
 # Version 1.0.1
 - Fix plugin metadata
 
