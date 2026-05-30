@@ -4,7 +4,7 @@
  */
 
 #import "FirebasexPerformancePlugin.h"
-#import "FirebasexCorePlugin.h"
+@import cordova_plugin_firebasex_core;
 @import FirebasePerformance;
 
 /** Preference key for the performance data collection enabled state. */
