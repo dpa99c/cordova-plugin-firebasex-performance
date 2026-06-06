@@ -66,7 +66,7 @@ var iosPlatformPath;
  * and the new cordova-ios 8+ layout (where the Xcode project is under `platforms/ios/App/App.xcodeproj`)
  * by checking for the existence of the new layout first, then falling back to the old layout if not found.
  */
-function getAppSubDirPath() {
+function getAppSubDirPath(appName) {
     var newPath = path.join(iosPlatformPath, appNameCordova8Plus);
     if (fs.existsSync(newPath)) {
         return newPath;
@@ -234,12 +234,11 @@ module.exports = function (context) {
                 appName = appNameMatch[1];
             }
 
-            var googlePlistPath = path.join(getAppSubDirPath(), "Resources", "GoogleService-Info.plist");
+            var googlePlistPath = path.join(getAppSubDirPath(appName), "Resources", "GoogleService-Info.plist");
             if (!fs.existsSync(googlePlistPath)) {
                 console.warn("GoogleService-Info.plist not found at expected path: " + googlePlistPath);
                 return;
             }
-
             var googlePlist = plist.parse(fs.readFileSync(googlePlistPath, "utf-8"));
             if (typeof pluginVariables["FIREBASE_PERFORMANCE_COLLECTION_ENABLED"] !== "undefined") {
                 googlePlist["FIREBASE_PERFORMANCE_COLLECTION_ENABLED"] =
