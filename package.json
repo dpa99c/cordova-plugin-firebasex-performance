@@ -22,6 +22,7 @@
         }
     },
     "keywords": ["cordova", "firebase", "performance", "monitoring"],
+    "types": "types/index.d.ts",
     "dependencies": {
         "plist": "^3.0.1"
     },
