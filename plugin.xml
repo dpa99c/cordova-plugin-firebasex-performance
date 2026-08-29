@@ -19,7 +19,7 @@
     <preference name="ANDROID_FIREBASE_PERFORMANCE_MONITORING" default="false" />
     <preference name="ANDROID_FIREBASE_PERF_GRADLE_PLUGIN_VERSION" default="2.0.2" />
 
-    <dependency id="cordova-plugin-firebasex-core" />
+    <dependency id="cordova-plugin-firebasex-core" version="^2.0.0" />
 
     <js-module src="www/firebasex-performance.js" name="FirebasexPerformancePlugin">
         <clobbers target="FirebasexPerformance" />
