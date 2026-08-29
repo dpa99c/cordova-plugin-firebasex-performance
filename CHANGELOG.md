@@ -1,3 +1,7 @@
+# Version 2.0.2
+- fix: add types field to package.json so TypeScript resolves type definitions
+	- Merged from [PR #1](https://github.com/dpa99c/cordova-plugin-firebasex-performance/pull/1)
+
 # Version 2.0.1
 - fix: pin core plugin dependency to v2
 
